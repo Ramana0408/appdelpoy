@@ -1,0 +1,20 @@
+apiVersion: 
+kind: Ingress
+metadata:
+  name: ingress-controller
+  annotations:
+    nginx:ingress.kubernetes.io/use-regex: "true"
+
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: myapp.local 
+    http:
+      paths:
+      - path: /
+        pathType: prefix
+        backend: 
+          service: 
+            name: app-service
+            port:
+              number: 8080    
