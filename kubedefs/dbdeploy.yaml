@@ -1,9 +1,9 @@
-apiVersion: v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: vprodb
+  name: vprodb1
   labels:
-    app: vprodb
+    app: vprodb1
 spec:
   selector:
     matchLabels:
@@ -12,7 +12,7 @@ spec:
   template:
     metadata:
       labels:
-        apps: vprodb
+        app: vprodb
 
     spec:
       containers:
@@ -20,7 +20,7 @@ spec:
         image: vprocontainers/vprofiledb
 
         volumeMounts:
-        - mountpath: /var/lib/mysql
+        - mountPath: /var/lib/mysql
           name: vpro-db-data
 
         ports:
@@ -29,7 +29,7 @@ spec:
     
         env:
         - name: MYSQL_ROOT_PASSWORD
-          valuefrom:
+          valueFrom:
             secretKeyRef:
               name: my-secret
               key: db-pass
@@ -37,17 +37,17 @@ spec:
 
       volumes:
       - name: vpro-db-data
-      persistentvolumeclaim:
-        claimName: db-pv-claim
+        persistentVolumeClaim:
+          claimName: db-pv-claim
 
-      init containers:
+      initContainers:
       - name: busybox
         image: busybox:latest
         command: ["sh","-c","rm -rf /var/lib/mysql/lost+found"]
 
         volumeMounts:
         - name: vpro-db-data
-          mountpath: /var/lib/mysql
+          mountPath: /var/lib/mysql
 
 
 

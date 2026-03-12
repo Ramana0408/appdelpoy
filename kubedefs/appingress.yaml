@@ -1,9 +1,9 @@
-apiVersion: 
+apiVersion: networking.k8s.io/v1 
 kind: Ingress
 metadata:
   name: ingress-controller
   annotations:
-    nginx:ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/use-regex: "true"
 
 spec:
   ingressClassName: nginx
@@ -12,7 +12,7 @@ spec:
     http:
       paths:
       - path: /
-        pathType: prefix
+        pathType: Prefix
         backend: 
           service: 
             name: app-service

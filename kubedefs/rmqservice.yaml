@@ -1,12 +1,12 @@
 apiVersion: v1
-kind: service
+kind: Service
 metadata:
   name: vpromq01
 
 spec:
   type: ClusterIP
   ports:
-  - targetport: rabbitmq-port
+  - targetPort: rabbitmq-port
     port: 5672
 
   selector:

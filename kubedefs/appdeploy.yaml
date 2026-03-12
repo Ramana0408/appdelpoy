@@ -1,4 +1,4 @@
-apiVersion: v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: vpro-app
@@ -12,7 +12,8 @@ spec:
   replicas: 1
   template:
     metadata:
-      app: vproapp
+      labels:
+        app: vproapp
     spec: 
       containers:
       - name: app-containers
@@ -22,7 +23,7 @@ spec:
         - name: app-container
           containerPort: 8080  
        
-      init containers:
+      initContainers:
       - name: init-db
         image: busybox
         command: ['sh','-c','until nslookup vprodb.$(cat/var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done;']

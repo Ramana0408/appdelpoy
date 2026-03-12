@@ -6,7 +6,7 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-  - targetport: app-container
+  - targetPort: app-container
     port: 8080
 
   selector:

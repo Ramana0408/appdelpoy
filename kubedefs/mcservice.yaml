@@ -1,13 +1,13 @@
 apiVersion: v1
-kind: service
+kind: Service
 metadata:
   name: mc-service
 
 spec:
   type: ClusterIP
   ports: 
-  - ports: 11211
-    targetport: vprocache01
+  - port: 11211
+    targetPort: vprocache01
 
-  Selector:
+  selector:
     app: vpro-mc
