@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vproapp
+  labels:
+    app: vproapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vproapp
+  template:
+    metadata:
+      labels:
+        app: vproapp
+    spec:
+      initContainers:
+      - name: init-db
+        image: busybox
+        command: ['sh','-c','until nslookup vprodb.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for db; sleep 2; done;']
+      - name: init-memcached
+        image: busybox
+        command: ['sh','-c','until nslookup vprocache01.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for memcached; sleep 2; done;']
+      - name: init-rabbitmq
+        image: busybox
+        command: ['sh','-c','until nslookup vprormq01.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for rmq; sleep 2; done;']
+      containers:
+      - name: vproapp
+        image: vprocontainers/vprofileapp
+        ports:
+        - containerPort: 8080
